@@ -16,8 +16,8 @@ ADD SaleDateConverted Date;
 UPDATE NashvilleHousing
 SET SaleDateConverted = CONVERT(DATE,SaleDate);
 
-Select SaleDateConverted
-From NashvilleHousing;
+SELECT SaleDateConverted
+FROM NashvilleHousing;
 
 
 --Populating the Property Address Data--
@@ -35,7 +35,7 @@ JOIN NashvilleHousing NashB
 	AND NashA.[UniqueID ]<> NashB.[UniqueID ]
 WHERE NashA.PropertyAddress IS NULL
 
-Update NashA
+UPDATE NashA
 SET PropertyAddress = ISNULL(NashA.PropertyAddress,NashB.PropertyAddress)
 FROM NashvilleHousing NashA
 JOIN NashvilleHousing NashB
@@ -45,13 +45,13 @@ WHERE NashA.PropertyAddress IS NULL
 
 -- Dividing the Address into Individual Columns (Adress ,City and State) 
 
-Select PropertyAddress
-From NashvillHousing 
+SELECT PropertyAddress
+FROM NashvillHousing 
 
-Select 
+SELECT 
 SUBSTRING(PropertyAddress, 1, CHARINDEX(',' ,PropertyAddress)-1) AS Address
 , SUBSTRING(PropertyAddress ,CHARINDEX(',' ,PropertyAddress)+1 ,LEN(PropertyAddress)) AS City
-From NashvilleHousing
+FROM NashvilleHousing
 
 ALTER TABLE NashvilleHousing
 ADD PropertySplitAddress Nvarchar(225);
@@ -71,10 +71,10 @@ FROM NashvilleHousing
 --- Splitting the Owner Address using PARSENAME-- 
 
 
-Select OwnerAddress
-From NashvilleHousing
+SELECT OwnerAddress
+FROM NashvilleHousing
 
-Select PARSENAME(REPLACE(OwnerAddress ,',', '.' ),3) as OwnerAddress
+SELECT PARSENAME(REPLACE(OwnerAddress ,',', '.' ),3) as OwnerAddress
 ,PARSENAME(REPLACE(OwnerAddress ,',', '.' ),2)  as OwnerCity
 ,PARSENAME(REPLACE(OwnerAddress ,',', '.' ),1)  as OwnerState
 From NashvilleHousing
@@ -122,29 +122,6 @@ SET SoldAsVacant = CASE WHEN SoldAsVacant  = 'Y' THEN 'Yes'
 	WHEN SoldAsVacant = 'N' THEN 'No'
 	ELSE SoldAsVacant 
 	END
-
-
--- Removing Duplicates--
-WITH RowNumCTE As(
-SELECT * ,
-	ROW_Number () OVER(
-	PARTITION BY ParcelID,
-				 PropertyAddress,
-				 SalePrice,
-				 SaleDate, 
-				 LegalReference
-				 ORDER BY 
-					UniqueID
-					) row_num
-
-
-FROM SQLProject..NashvilleHousing
-ORDER BY ParcelID
-)
-SELECT* 
-FROM RowNumCTE
-WHERE row_num >1 
-ORDER BY PropertyAddress
 
 
 
