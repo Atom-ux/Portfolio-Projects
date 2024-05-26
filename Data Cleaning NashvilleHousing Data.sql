@@ -23,7 +23,7 @@ FROM NashvilleHousing;
 
 SELECT *
 FROM NashvilleHousing
---WHERE PropertyAddress is null
+--WHERE PropertyAddress is NULL--
 ORDER BY ParcelID
 
 --Inner join the same table to remove the duplicates -- 
