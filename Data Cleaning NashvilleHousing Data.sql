@@ -1,9 +1,8 @@
 SELECT*
 FROM NashvilleHousing
 
-
--- This is Standadising the date format--
-
+--This is Standardising the date format--
+	
 SELECT SaleDate, CONVERT(DATE,SaleDate) 
 FROM NashvilleHousing;
 
@@ -28,6 +27,8 @@ FROM NashvilleHousing
 ORDER BY ParcelID
 
 --Inner join the same table to remove the duplicates -- 
+
+	
 SELECT NashA.ParcelID, NashA.PropertyAddress, NashB.ParcelID,NashB.PropertyAddress, ISNULL(NashA.PropertyAddress,NashB.PropertyAddress)
 FROM NashvilleHousing NashA
 JOIN NashvilleHousing NashB
@@ -43,7 +44,7 @@ JOIN NashvilleHousing NashB
 	AND NashA.[UniqueID ]<> NashB.[UniqueID ]
 WHERE NashA.PropertyAddress IS NULL
 
--- Dividing the Address into Individual Columns (Adress ,City and State) 
+-- Dividing the Address into Individual Columns (Address,City and State) 
 
 SELECT PropertyAddress
 FROM NashvillHousing 
@@ -68,15 +69,16 @@ SET PropertySplitCity = SUBSTRING(PropertyAddress ,CHARINDEX(',' ,PropertyAddres
 SELECT*
 FROM NashvilleHousing 
 
+	
 --- Splitting the Owner Address using PARSENAME-- 
 
 
 SELECT OwnerAddress
 FROM NashvilleHousing
 
-SELECT PARSENAME(REPLACE(OwnerAddress ,',', '.' ),3) as OwnerAddress
-,PARSENAME(REPLACE(OwnerAddress ,',', '.' ),2)  as OwnerCity
-,PARSENAME(REPLACE(OwnerAddress ,',', '.' ),1)  as OwnerState
+SELECT PARSENAME(REPLACE(OwnerAddress,',', '.' ),3) as OwnerAddress
+,PARSENAME(REPLACE(OwnerAddress,',', '.' ),2)  as OwnerCity
+,PARSENAME(REPLACE(OwnerAddress,',', '.' ),1)  as OwnerState
 From NashvilleHousing
 
 ALTER TABLE NashvilleHousing
@@ -101,7 +103,7 @@ SELECT*
 FROM NashvilleHousing
 
 
---Chaning Y and N to Yes and No in (Sold as Vacant) Field--
+--Changing Y and N to Yes and No in (Sold as Vacant) Field--
 
 SELECT DISTINCT SoldAsVacant , COUNT(SoldAsVacant)
 FROM NashvilleHousing
@@ -125,10 +127,10 @@ SET SoldAsVacant = CASE WHEN SoldAsVacant  = 'Y' THEN 'Yes'
 
 
 
---- DELETE Columns -- ( Used for accidently created columns) 
+--- DELETE Columns -- ( Used for accidentally created columns) 
 
 SELECT* 
 FROM SQLProject..NashvilleHousing
 
 ALTER TABLE  SQLProject..NashvilleHousing
-DROP COLUMN OwnerAddress, PropertyAddress , SaleDate
+DROP COLUMN OwnerAddress, PropertyAddress, SaleDate
